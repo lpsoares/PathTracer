@@ -1,0 +1,36 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "build",
+            "command": "/usr/local/bin/g++-11",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "main.cc",
+                "-o",
+                "pathtracer"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            
+            "label": "view",
+            "command": "open",
+            "args": ["image.ppm"],
+            "options": {
+                "cwd": "${fileDirname}"
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
