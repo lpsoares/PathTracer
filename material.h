@@ -8,9 +8,15 @@ struct hit_record;
 
 class material {
     public:
+
+        virtual color emitted(double u, double v, const point3& p) const {
+            return color(0,0,0);
+        }
+
         virtual bool scatter(
             const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
         ) const = 0;
+
 };
 
 class lambertian : public material {
@@ -18,7 +24,6 @@ class lambertian : public material {
         
         lambertian(const color& a) : albedo(make_shared<solid_color>(a)) {}
         lambertian(shared_ptr<texture> a) : albedo(a) {}
-
 
         virtual bool scatter(
             const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
@@ -95,5 +100,26 @@ class dielectric : public material {
         }
 
 };
+
+class diffuse_light : public material  {
+    public:
+        diffuse_light(shared_ptr<texture> a) : emit(a) {}
+        diffuse_light(color c) : emit(make_shared<solid_color>(c)) {}
+
+        virtual bool scatter(
+            const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+        ) const override {
+            return false;
+        }
+
+        virtual color emitted(double u, double v, const point3& p) const override {
+            return emit->value(u, v, p);
+        }
+
+    public:
+        shared_ptr<texture> emit;
+};
+
+
 
 #endif
